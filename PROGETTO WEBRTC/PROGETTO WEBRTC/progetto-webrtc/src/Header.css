@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+.Posti-logo {
+    left: 5vmin;
+    width: 8vmin;
+    height: 8vmin;
+    margin-top: 0.5vmin;
+    pointer-events: none;
+}
+
+.headText {
+    margin-top: 2.5vmin;
+    pointer-events: none;
+    font: size 2em;;
+    font-family: 'Montserrat', sans-serif;
+    left: 3vmin;
+    z-index: 1;
+    position: relative;
+    color: white;
+    text-shadow: 0px 4px 8px rgba(10, 10, 10, 0.863);
+}
+
+
+.header {
+    background: transparent;
+    display: flex;
+    height: 10vmin;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    right: auto;
+    top: 0;
+    background-color: #1d2357;
+
+}
+
+
