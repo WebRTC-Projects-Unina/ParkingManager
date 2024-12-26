@@ -3,6 +3,7 @@ import './App.css';
 import Posti from './Posti.js';
 import Header from './Header.js';
 import { Toaster } from 'react-hot-toast';
+import Gates from './Gates.js';
 
 
 
@@ -11,7 +12,8 @@ function App() {
     <>
       <Header />
       <Posti />
-      <Toaster position="bottom/right" />
+      <Gates />
+      <Toaster position="bottom/left" />
     </>
   );
 }

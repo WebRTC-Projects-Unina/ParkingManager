@@ -44,7 +44,8 @@ input[type='text']:focus {
 
 button {
     padding: 10px 20px;
-    font-size: 16px;
+    width: 11vh;
+    font-size: 13px;
     color: white;
     background-color: #d43a70;
     border: none;
@@ -57,14 +58,15 @@ button:hover {
     background-color: #d43a70cc;
 }
 
-.Posti{
+.Gates{
+
     animation: slideUp 1s ease-in-out;
     font-family: 'Montserrat', sans-serif;
     justify-content: left;
     position: absolute;
     left: 3vh;
-    top: 10vh;
-    height: 15vh;
+    top: 47vh;
+    height: 15vh;  
     width: 17vw;
     display: flex;
     align-items: flex-start;
@@ -76,7 +78,7 @@ button:hover {
 @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
 .container:hover{
-    transform: translateY(-12px) scale(1.02); /* definiamo la trasformazione transform, in cui translateY permette di capire quanto 
+    transform: translateY(-10px) scale(1.02); /* definiamo la trasformazione transform, in cui translateY permette di capire quanto 
     spazio copre l'animazione su y, scale invece di quanto diventa piu grande
     */
     box-shadow: 2px 2px 25px #ff045c70;

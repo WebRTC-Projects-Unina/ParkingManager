@@ -14,17 +14,17 @@ function Posti() {
     useEffect(() => {
         if (!postiAdmin) return; // Evita richieste non necessarie
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://localhost:5000/change_places', true);
+        xhr.open('POST', 'http://192.168.11.89:80/change_places', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function() {
+            setInpPostiAdmin(""); // Reset dell'input
+
             if (xhr.status === 201) {
                 // Mostra messaggio di conferma e resetta input
-                setInpPostiAdmin(""); // Reset dell'input
                 toast.success("Posti cambiati correttamente!")
                 
             } else {
                 toast.error("Posti non cambiati!")
-
             }
         };
 
@@ -47,7 +47,7 @@ function Posti() {
     // Funzione per ottenere i posti disponibili
     const inviaRichiesta = () => {
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://localhost:5000/places', true);
+        xhr.open('GET', 'http://192.168.11.89:80/places', true);
         xhr.onload = function() {
             if (xhr.status === 200) {
                 setPostiCount(xhr.responseText); // Aggiorna i posti
@@ -56,11 +56,11 @@ function Posti() {
         xhr.send();
     };
 
-    
 
     return (
         <div className="Posti">
             <div className="container">
+            <p><strong>Gestione Posti</strong></p>
                 <div className="section">
                     <p className="text" id="pos">
                         Posti disponibili adesso: <strong id="postiCount">{postiCount}</strong>
