@@ -3,7 +3,8 @@
 
 .container {
     overflow: hidden;
-    max-width: 600px;
+    max-width: 600vw;
+    position: absolute;
     width: 90%;
     background: rgba(255, 255, 255, 0.85); /* Semi-transparent for readability */
     border-radius: 15px;
@@ -102,4 +103,37 @@ footer {
     spazio copre l'animazione su y, scale invece di quanto diventa piu grande
     */
     box-shadow: 2px 2px 25px #ff045c70;
+}
+
+/* Media query per schermi piccoli */
+/* Adatta la larghezza della pagina ai dispositivi mobili */
+@media (max-width: 1300px) {
+    .Login {
+        width: 85%; /* Rende il contenitore più largo per dispositivi piccoli */
+        top: 18vh;   /* Abbassa leggermente la posizione per evitare overflow */
+        left: 0%;     /* Centrato senza margini */
+        padding: 5%;
+        box-shadow: none; /* Riduce l'effetto del box-shadow per schermi piccoli */
+    }
+
+    .container {
+        width: 90%;
+        padding: 2%;
+    }
+
+    input[type="text"], button {
+        font-size: 16px;
+        width: 90%;
+        
+    }
+
+    footer {
+        font-size: 80%;
+        padding: 2%;
+    }
+
+    button {
+        font-size: 80%;
+        padding: 2%;
+    }
 }

@@ -5,7 +5,7 @@
 
 #define PIN_SG90 16 // Pin output servomotore
 #define pinInput 5  // Pin di input per il photo-interrupter
-int x=1; //valore da cambiare in base alla scheda (0: uscita, 1: ingresso)
+int x=0; //valore da cambiare in base alla scheda (0: uscita, 1: ingresso)
 
 
 WebServer server(80);
@@ -21,7 +21,7 @@ const char* ssid = "Chihiro Fushimi";          // Sostituisci con il nome della 
 const char* password = "giuv1911";  // Sostituisci con la password della tua rete Wi-Fi
 
 // URL del server centrale
-const char* serverURL = "http://192.168.11.89/parking"; // Sostituisci con l'indirizzo del tuo server
+const char* serverURL = "http://192.168.197.89/parking"; // Sostituisci con l'indirizzo del tuo server
 
 // Timeout massimo per la richiesta HTTP (in millisecondi)
 const unsigned long httpTimeout = 5000;
@@ -75,6 +75,7 @@ void send_data_to_server(int id, int x) {
         delay(10);
       }
     }
+
     http.end(); //termino la connesione col server
     return; // Esci dalla funzione, nessuna risposta valida ricevuta
   }
@@ -148,7 +149,7 @@ void loop() {
   int valueState = digitalRead(pinInput); // Legge il valore digitale dal pin del photo-interrupter
   Serial.println(valueState);
 
-  int id = 4; // ID univoco per questa scheda
+  int id = 1; // ID univoco per questa scheda
 
   if (valido == 0 && valueState == HIGH) {
     // Invia i dati al server tramite richiesta HTTP

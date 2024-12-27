@@ -84,3 +84,49 @@ button:hover {
     box-shadow: 2px 2px 25px #ff045c70;
 }
 
+@media (max-width: 1300px) {
+
+    .Gates{
+        width: 90%;
+        padding: 2%;
+        margin-top: 10%;
+       
+    }
+
+    .button{
+        margin: 2% 0%;
+
+    }
+}
+
+@media (max-width: 1000px) {
+
+    .Gates{
+        width: 90%;
+        padding: 2%;
+        margin-top: 5%;
+
+    }
+
+    .button{
+        margin: 2% 0%;
+
+    }
+}
+
+
+
+@media (max-width: 740px) {
+
+    .Gates{
+        width: 90%;
+        padding: 1%;
+        margin-top: 18%;
+    }
+
+    .button{
+        margin: 2% 0%;
+    }
+
+}
+

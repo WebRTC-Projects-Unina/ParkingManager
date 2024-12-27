@@ -9,10 +9,14 @@ function Posti() {
     const [postiCount, setPostiCount] = useState('Attendendo...'); // Posti disponibili
     const [postiAdmin, setAdmin] = useState(''); // Posti da inviare
     const [InpPostiAdmin, setInpPostiAdmin] = useState(''); // Input utente
+    const [random_ID, setRandomID] = useState(0);
+    
 
     // Effetto per inviare dati al server quando l'admin aggiorna i posti
     useEffect(() => {
+
         if (!postiAdmin) return; // Evita richieste non necessarie
+
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'http://192.168.197.89:80/change_places', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -23,7 +27,9 @@ function Posti() {
                 // Mostra messaggio di conferma e resetta input
                 toast.success("Posti cambiati correttamente!")
                 
-            } else if(!xhr.status === 400) {
+            } else if (xhr.status === 401) {
+                toast.error("Posti non cambiati! Richiesta non autorizzata.");
+            } else {
                 toast.error("Posti non cambiati!")
             }
         };
@@ -31,21 +37,48 @@ function Posti() {
         //Se abbiamo un'errore verra posto la notifica di errore
         xhr.onerror = function (){
 
-            setInpPostiAdmin(""); // Reset dell'input
-            if(!xhr.status === 400) {
-                toast.error("Posti non cambiati!")
+            toast.error("Posti non cambiati!")
+            
+        }
+
+        xhr.send(JSON.stringify({ posti: postiAdmin, random: random_ID }));
+        setAdmin(''); // Reset dello stato di amministrazione
+    }, [random_ID]);
+
+
+    //Richiesta numero casuale per un fattore di Sicurezza. 
+    useEffect(() => {
+
+        if(postiAdmin===''){
+            return;
+        }
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "http://192.168.197.89/2002200001280929", true);
+
+        xhr.onload = () =>{
+            if(xhr.status===200){
+                setRandomID(xhr.responseText);
             }
         }
 
-        xhr.send(JSON.stringify({ posti: postiAdmin }));
-        setAdmin(''); // Reset dello stato di amministrazione
+         //se dovesse andare male la richiesta,
+        xhr.onerror = function(){
+            toast.error("Errore nella ricezione del valore!"); //mostro un pop-up di errore
+        };
+        setInpPostiAdmin(""); // Reset dell'input
+        xhr.send();
+
     }, [postiAdmin]);
+
+
 
     // Effetto per aggiornare i posti disponibili periodicamente
     useEffect(() => {
-        const intervalId = setInterval(() => inviaRichiesta(), 3000);
+        const intervalId = setInterval(() => inviaRichiesta(), 2000);
         return () => clearInterval(intervalId); // Pulizia intervallo
     }, []);
+
 
     // Funzione per ottenere i posti disponibili
     const inviaRichiesta = () => {

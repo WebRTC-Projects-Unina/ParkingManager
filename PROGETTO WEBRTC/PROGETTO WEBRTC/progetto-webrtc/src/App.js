@@ -1,20 +1,33 @@
 import logo from './logo.svg';
 import './App.css';
-import Posti from './Posti.js';
-import Header from './Header.js';
 import { Toaster } from 'react-hot-toast';
-import Gates from './Gates.js';
-
-
+import { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import Dashboard from './DashBoard.js';
+import Login from './Login.js';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   return (
-    <>
-      <Header />
-      <Posti />
-      <Gates />
-      <Toaster position="bottom/left" />
-    </>
+    <Router>
+    <Routes>
+      <Route
+        path="/login"
+        element={<Login onLogin={setIsAuthenticated} />}
+      />
+      <Route
+        path="/dashboard"
+        element={
+          isAuthenticated ? <Dashboard /> : <Navigate to="/login" replace />
+        }
+      />
+      <Route
+        path="*"
+        element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} />}
+      />
+    </Routes>
+    <Toaster position='bottom-left'/>
+  </Router>
   );
 }
 

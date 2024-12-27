@@ -1,11 +1,16 @@
 from flask import Flask, jsonify
 from flask_pymongo import PyMongo
 from flask import request
+from flask_cors import CORS  # Importa Flask-CORS
 
-app = Flask(name)
 
-Configurazione MongoDB
-app.config["MONGO_URI"] = "mongodb://antonio:antonio@localhost:27017/admin"
+
+app = Flask(__name__)
+
+CORS(app)  # Abilita CORS per tutta l'app
+
+#Configurazione MongoDB
+app.config["MONGO_URI"] = "mongodb://frabru99:ciao@localhost:27017/admin"
 mongo = PyMongo(app)
 db = mongo.db
 
@@ -16,10 +21,15 @@ def index():
 
 
 #query a mongoDB
-@app.route('/search', methods=['GET'])
+@app.route('/admin', methods=['POST'])
 def search_name():
-    user = request.args.get('username')
-    passw = request.args.get('password')
+
+    data=request.get_json()
+
+    print(data)
+
+    user = data.get('username')
+    passw = data.get('password')
 
     if not user:
         return jsonify({"error": "Username non specificato"}), 400
@@ -31,12 +41,12 @@ def search_name():
     try:
         result = db.db_webrtc.find_one({"username": user, "password": passw })
         if result:
-            return jsonify({"username": user, "password": passw, "message": "UTENTE AUTORIZZATO!"})
+            return jsonify({"message": "UTENTE AUTORIZZATO!"}), 200
         else:
-            return jsonify({"message": "Utente non trovato!"})
+            return jsonify({"message": "Utente non trovato!"}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 
-if name == 'main':
-    app.run(debug=True, port=8080)  # Cambia 8080 con il numero di porta desiderato
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)  # Cambia 8080 con il numero di porta desiderato

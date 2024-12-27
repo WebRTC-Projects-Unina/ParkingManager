@@ -30,6 +30,7 @@
     right: auto;
     top: 0;
     background-color: #1d2357;
+    z-index: -1;
 
 }
 
@@ -40,3 +41,9 @@
 }
 
 
+@media (max-width: 1300px) {
+    .image{
+        display: none;
+    }
+
+}

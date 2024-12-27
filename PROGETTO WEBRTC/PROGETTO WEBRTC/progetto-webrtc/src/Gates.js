@@ -23,7 +23,9 @@ function Gates() {
             setIDGates(0);
             if(xhr.status===200){ //se va tutto ok,
                 toast.success("Gate "+id_gates+" azionato con successo!");
-            }else{ //altrimenti mostro un pop-up di errore in basso a sinistra
+            } else if (xhr.status === 401) {
+                toast.error("Posti non cambiati! Richiesta non autorizzata.");
+            } else { //altrimenti mostro un pop-up di errore in basso a sinistra
                 toast.error("Errore nell'azionamento del Gate "+id_gates+"!");
             }
         };
@@ -61,7 +63,6 @@ function Gates() {
 
     }, [id_gates])
 
-    
 
     return (
         <div className="Gates">
@@ -69,15 +70,14 @@ function Gates() {
                 <p><strong>Apri/Chiudi Gates</strong></p>
                 <div className="section">
                     <p>
-                    <button onClick={() => setIDGates(1)}>Ingresso 1</button>
+                    <button className="button" onClick={() => setIDGates(1)}>Ingresso 1</button>
                     <strong> </strong>
-                    <button onClick={() => setIDGates(2)}>Ingresso 2</button>
+                    <button className="button" onClick={() => setIDGates(2)}>Ingresso 2</button>
                     </p>
                     <p>
-                
-                    <button onClick={() => setIDGates(3)}>Uscita 1</button>
+                    <button className="button" onClick={() => setIDGates(3)}>Uscita 1</button>
                     <strong> </strong>
-                    <button onClick={() => setIDGates(4)}>Uscita 2</button>
+                    <button className="button" onClick={() => setIDGates(4)}>Uscita 2</button>
                     </p>
                 </div>
             </div>

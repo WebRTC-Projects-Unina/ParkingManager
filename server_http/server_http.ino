@@ -3,6 +3,9 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include <LiquidCrystal_I2C.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "freertos/semphr.h"
 
 // ------ CONFIGURAZIONI E VARIABILI ------
 
@@ -15,7 +18,11 @@ const char* password = "giuv1911";            // Sostituisci con la password del
 int posti_liberi = POSTI_TOTALI;
 
 
-String ip_addresses[4] = {"192.168.11.63","192.168.11.154", "192.168.11.173", "192.168.11.101"}; //address IP
+//Semaforo, utile per lo  Strict2PL implementato nella transazione
+SemaphoreHandle_t xMutex;
+
+
+String ip_addresses[4] = {"192.168.197.63","192.168.197.154","192.168.197.173","192.168.197.101"}; //address IP
 
 // Variabili per il controllo del LED
 String ledState = "OFF";
@@ -52,7 +59,63 @@ void aggiornaLCD() {
   }
 }
 
-// Route per gestire richieste POST al parcheggio
+
+
+
+void Task1(void *body){
+
+
+  String* bodymes = (String*) body;
+
+
+  // Parsing del payload JSON
+  StaticJsonDocument<200> doc;
+  DeserializationError error = deserializeJson(doc, *(bodymes));
+
+  if (error) {
+    Serial.println("Errore nel parsing del JSON");
+    server.send(400, "application/json", "{\"error\":\"Invalid JSON\"}");
+    return;
+  }
+
+  
+  if(xSemaphoreTake(xMutex, portMAX_DELAY) == pdTRUE){ //Acquire mutex
+
+    Serial.println("Task sta accedendo alla risorsa condivisa.");
+
+    //int ack = checkMessagePosti(doc);    //facciamo check di ingresso o uscita
+
+
+    int x = doc["x"]; // x=1 per ingresso, x=ù0 per uscita
+
+
+    if (x == 1) { // Ingresso
+      if (posti_liberi > 0) {
+        posti_liberi--;
+        Serial.println("Ingresso consentito. Posti liberi: " + String(posti_liberi));
+      } else {
+        Serial.println("Posti esauriti. Ingresso negato.");
+      }
+    } else if (x == 0) { // Uscita
+      if (posti_liberi < POSTI_TOTALI) {
+        posti_liberi++;
+        Serial.println("Uscita consentita. Posti liberi: " + String(posti_liberi));
+      } else {
+        Serial.println("Nessuna macchina in uscita. Uscita negata.");
+      }
+
+    }
+
+
+    xSemaphoreGive(xMutex); //Release
+  }
+
+  vTaskDelete(NULL); //Eliminazione Task, come se fosse un commit.
+
+}
+
+
+// Route per gestire richieste POST per Ingresso/Uscita
 void handlePost() {
   if (server.hasArg("plain") == false) {
     server.send(400, "application/json", "{\"error\":\"Bad Request\"}");
@@ -62,49 +125,63 @@ void handlePost() {
   String body = server.arg("plain");
   Serial.println("Richiesta ricevuta: " + body);
 
-  // Parsing del payload JSON
-  StaticJsonDocument<200> doc;
-  DeserializationError error = deserializeJson(doc, body);
+  BaseType_t xReturned = xTaskCreate(Task1, "Task1", 20000, (void*) &body, 1, NULL); //Creazione del Task 
 
-  if (error) {
-    Serial.println("Errore nel parsing del JSON");
-    server.send(400, "application/json", "{\"error\":\"Invalid JSON\"}");
-    return;
-  }
-
-  int x = doc["x"]; // x=1 per ingresso, x=0 per uscita
   StaticJsonDocument<100> response;
-  int ack = 0;
+  String responseBody;
+  if( xReturned == pdPASS ){
 
-  if (x == 1) { // Ingresso
-    if (posti_liberi > 0) {
-      posti_liberi--;
-      ack = 1;
-      Serial.println("Ingresso consentito. Posti liberi: " + String(posti_liberi));
-    } else {
-      Serial.println("Posti esauriti. Ingresso negato.");
-    }
-  } else if (x == 0) { // Uscita
-    if (posti_liberi < POSTI_TOTALI) {
-      posti_liberi++;
-      ack = 1;
-      Serial.println("Uscita consentita. Posti liberi: " + String(posti_liberi));
-    } else {
-      Serial.println("Nessuna macchina in uscita. Uscita negata.");
-    }
+    aggiornaLCD();
+  
+    response["ack"] = 1;
+    serializeJson(response, responseBody);
+    
+
+   
+  } else {
+    response["ack"] = 0;
+    serializeJson(response, responseBody);
   }
 
-  aggiornaLCD();
-
-  response["ack"] = ack;
-  String responseBody;
-  serializeJson(response, responseBody);
   server.send(200, "application/json", responseBody);
+
+}
+
+//Getsione richiesta GET di posti_liberi
+void handlePlaces(){
+  server.send(200, "text", String(posti_liberi));
 }
 
 
-void handlePlaces(){
-  server.send(200, "text", String(posti_liberi));
+void Task2(void *body){
+
+  String * bodymes = (String*) body;
+
+  // Creare un buffer per analizzare il JSON 
+  const size_t capacity = JSON_OBJECT_SIZE(2) + 40; 
+  DynamicJsonDocument doc(capacity); //Crea un DynamicJsonDocument con la capacità del Buffer creato
+  
+  // Analizzare il JSON 
+  DeserializationError error = deserializeJson(doc, *(bodymes));  //Deserializza il json
+
+
+  if (error) { 
+    Serial.print(F("Errore di deserializzazione JSON: ")); 
+    Serial.println(error.f_str()); server.send(400, "application/json", "{\"error\":\"Invalid JSON\"}"); 
+    return; 
+  } 
+  
+  if(xSemaphoreTake(xMutex, portMAX_DELAY) == pdTRUE){
+    // Ottieni il valore del campo "posti" 
+    int num_posti = int(doc["posti"]); 
+     
+    posti_liberi = num_posti;
+    
+    
+    xSemaphoreGive(xMutex); //Release
+  }
+
+  vTaskDelete(NULL); //Eliminazione Task, come se fosse un commit.
 
 }
 
@@ -113,26 +190,37 @@ void handleChangePlaces(){
   String body = server.arg("plain");
   Serial.println("Richiesta ricevuta: " + body);
 
+
   // Creare un buffer per analizzare il JSON 
-  const size_t capacity = JSON_OBJECT_SIZE(1) + 20; 
+  const size_t capacity = JSON_OBJECT_SIZE(2) + 40; 
   DynamicJsonDocument doc(capacity); //Crea un DynamicJsonDocument con la capacità del Buffer creato
   
   // Analizzare il JSON 
   DeserializationError error = deserializeJson(doc, body);  //Deserializza il json
 
-  if (error) { 
-    Serial.print(F("Errore di deserializzazione JSON: ")); 
-    Serial.println(error.f_str()); server.send(400, "application/json", "{\"error\":\"Invalid JSON\"}"); 
-    return; 
-  } 
-    
-  // Ottieni il valore del campo "posti" 
-  int num_posti = doc["posti"]; 
-  posti_liberi = num_posti;
-  aggiornaLCD();
-  
-  server.send(201,"","");
+
+  String randNumb = doc["random"];
+  Serial.println(randNumb);
+  Serial.println(randNumberReq);
+
+  if (randNumb.compareTo(randNumberReq) == 0){
+  BaseType_t xReturned = xTaskCreate(Task2, "Task2", 20000, (void*) &body, 1, NULL); //Creazione del Task 
+
+
+    if( xReturned == pdPASS ){
+      aggiornaLCD();
+      server.send(201,"","");
+    } else {
+      server.send(500, "", "");
+    }
+
+  } else {
+    server.send(401, "", "");
+  }
+
+  randNumberReq="";
 }
+
 
 void handleOptions(){ 
   server.sendHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS"); 
@@ -140,6 +228,8 @@ void handleOptions(){
   server.send(204); // No Content 
 }
 
+
+//Funzione per la richiesta di un numero casuale, per fare in modo di Autenticare la richiesta di apertura del gate. 
 void getKeys(){
 
   randNumberReq = String(random(30, 10001));
@@ -151,8 +241,7 @@ void sendGetGates(int id){
     HTTPClient http;
     http.begin("http://"+ip_addresses[id-1]+"/gate");
     int HttpResponseCode = http.GET();
-    delay(500);
-    
+   
     if(HttpResponseCode == 200){
       server.send(200, "", "");
     } else {
@@ -163,7 +252,7 @@ void sendGetGates(int id){
     http.end();
 }
 
-
+//Metodo per la gestione della richiesta del metodo "/gates"
 void handleGates(){
 
   //mi prendo il nuovo numero di posti dal payload della risposta
@@ -193,7 +282,9 @@ void handleGates(){
 
   if (random.compareTo(randNumberReq) == 0) {
       Serial.print("Richiesta di apertura...");
-      sendGetGates(id);
+      sendGetGates(id); //Chiamata del metodo "/gate" sul client specificato
+  } else {
+    server.send(401, "", "");
   }
 
 }
@@ -214,6 +305,8 @@ void setupServerRoutes() {
 
 // ------ SETUP E LOOP ------
 
+
+
 void setup() {
   Serial.begin(115200);
   initLCD();
@@ -222,6 +315,9 @@ void setup() {
   lcd.print("DI.P.S by B&B");
   delay(1000);
 
+
+  //Creazione semaforo
+  xMutex = xSemaphoreCreateMutex(); 
 
   // Configurazione Wi-Fi
   WiFi.begin(ssid, password);
