@@ -14,7 +14,7 @@ function Posti() {
     useEffect(() => {
         if (!postiAdmin) return; // Evita richieste non necessarie
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://192.168.11.89:80/change_places', true);
+        xhr.open('POST', 'http://192.168.197.89:80/change_places', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function() {
             setInpPostiAdmin(""); // Reset dell'input
@@ -23,15 +23,18 @@ function Posti() {
                 // Mostra messaggio di conferma e resetta input
                 toast.success("Posti cambiati correttamente!")
                 
-            } else {
+            } else if(!xhr.status === 400) {
                 toast.error("Posti non cambiati!")
             }
         };
 
         //Se abbiamo un'errore verra posto la notifica di errore
         xhr.onerror = function (){
+
             setInpPostiAdmin(""); // Reset dell'input
-            toast.error("Posti non cambiati!")
+            if(!xhr.status === 400) {
+                toast.error("Posti non cambiati!")
+            }
         }
 
         xhr.send(JSON.stringify({ posti: postiAdmin }));
@@ -47,7 +50,7 @@ function Posti() {
     // Funzione per ottenere i posti disponibili
     const inviaRichiesta = () => {
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://192.168.11.89:80/places', true);
+        xhr.open('GET', 'http://192.168.197.89:80/places', true);
         xhr.onload = function() {
             if (xhr.status === 200) {
                 setPostiCount(xhr.responseText); // Aggiorna i posti
