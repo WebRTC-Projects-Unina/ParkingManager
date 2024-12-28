@@ -1,8 +1,8 @@
 from flask import Flask, jsonify
 from flask_pymongo import PyMongo
 from flask import request
+from markupsafe import escape
 from flask_cors import CORS  # Importa Flask-CORS
-
 
 
 app = Flask(__name__)
@@ -28,8 +28,8 @@ def search_name():
 
     print(data)
 
-    user = data.get('username')
-    passw = data.get('password')
+    user = escape(data.get('username'))
+    passw = escape(data.get('password'))
 
     if not user:
         return jsonify({"error": "Username non specificato"}), 400
