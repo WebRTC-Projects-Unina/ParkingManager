@@ -44,6 +44,9 @@ function Gates() {
 
     useEffect(() => {
 
+        if(id_gates===0){
+            return;
+        }
 
         const xhr = new XMLHttpRequest();
         xhr.open("GET", "http://192.168.197.89/2002200001280929", true);
@@ -80,7 +83,23 @@ function Gates() {
                     <button className="button" onClick={() => setIDGates(4)}>Uscita 2</button>
                     </p>
                 </div>
+
+                <div className="Caution">
+                    <div className="section"> 
+                        <p> 
+                            <strong>
+                                Attenzione: Per usufruire delle piene funzionalità si consiglia di visitare la pagina da un Personal Computer.
+                            </strong>
+                        </p>
+                    </div>
+                </div>
+
             </div>
+
+            
+                
+            
+
         </div>
     );
 }

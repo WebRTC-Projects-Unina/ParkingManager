@@ -75,6 +75,10 @@ button:hover {
 
 }
 
+.Caution{
+    display: none;
+}
+
 @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
 .container:hover{
@@ -93,10 +97,16 @@ button:hover {
        
     }
 
+    .Caution{
+        display: block;
+    }
+
     .button{
         margin: 2% 0%;
 
     }
+
+    
 }
 
 @media (max-width: 1000px) {

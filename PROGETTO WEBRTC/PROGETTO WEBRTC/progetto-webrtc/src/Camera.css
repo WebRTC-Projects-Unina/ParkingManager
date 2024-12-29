@@ -1,0 +1,70 @@
+.containerCamera {
+    max-width: 100%;
+    width: 100%;
+    
+    background: rgba(255, 255, 255, 0.85); /* Semi-transparent for readability */
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1%;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;/*Quanto dura l'animazione e il box-shadow come varia*/
+}
+
+h1 {
+    margin: 0 0 20px;
+    font-size: 28px;
+    
+}
+
+.sectionCamera {
+    margin: 20px 0;
+    padding: 20px;
+    height: 51.5vh;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fafafa;
+}
+
+
+.Camera1{
+    animation: slideUp 1s ease-in-out;
+    justify-content: center;
+    position: absolute;
+    left: 21.7vw;
+    top: 10vh;
+    width: 37%;
+}
+
+.Camera2{
+    width: 37%;
+    animation: slideUp 1s ease-in-out;
+    justify-content: center;
+    position: absolute;
+    left: 61vw;
+    top: 10vh;
+}
+
+.errorImg{
+    align-items: center;
+    margin-top: 30%;
+
+    
+}
+
+.cameraImg{
+    border-radius: 10px;
+}
+
+@keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+
+@media (max-width: 1300px) {
+
+    .Camera1{
+        display: none;
+    }
+
+    .Camera2{
+        display: none;
+    }
+}

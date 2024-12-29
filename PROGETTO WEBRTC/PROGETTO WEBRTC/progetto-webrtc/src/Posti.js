@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 function Posti() {
 
     // Stati per gestire dati e interfaccia
-    const [postiCount, setPostiCount] = useState('Attendendo...'); // Posti disponibili
+    const [postiCount, setPostiCount] = useState('0'); // Posti disponibili
     const [postiAdmin, setAdmin] = useState(''); // Posti da inviare
     const [InpPostiAdmin, setInpPostiAdmin] = useState(''); // Input utente
     const [random_ID, setRandomID] = useState(0);
@@ -112,6 +112,8 @@ function Posti() {
                     <button onClick={() => setAdmin(InpPostiAdmin)}>Invia</button>
                     
                 </div>
+
+                
             </div>
         </div>
     );
