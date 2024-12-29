@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import './Gates.css';
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';

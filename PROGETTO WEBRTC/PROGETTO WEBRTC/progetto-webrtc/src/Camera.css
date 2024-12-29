@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
 .containerCamera {
     max-width: 100%;
     width: 100%;
@@ -27,15 +29,18 @@ h1 {
 
 
 .Camera1{
+    font-family: 'Montserrat', sans-serif;
+    width: 37%;
     animation: slideUp 1s ease-in-out;
     justify-content: center;
     position: absolute;
     left: 21.7vw;
     top: 10vh;
-    width: 37%;
+    
 }
 
 .Camera2{
+    font-family: 'Montserrat', sans-serif;
     width: 37%;
     animation: slideUp 1s ease-in-out;
     justify-content: center;
@@ -47,12 +52,12 @@ h1 {
 .errorImg{
     align-items: center;
     margin-top: 30%;
-
-    
+    animation: slideUp 1s ease-in-out;
 }
 
 .cameraImg{
     border-radius: 10px;
+    
 }
 
 @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }

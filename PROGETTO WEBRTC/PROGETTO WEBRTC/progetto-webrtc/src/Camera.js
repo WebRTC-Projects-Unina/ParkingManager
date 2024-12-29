@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./Camera.css"
 
 
-const Camera = ({source, nameCamera}) =>{
+const Camera = ({source, nameCamera, nameDisplay}) =>{
 
 
     const [hasError, setHasError] = useState(false);
@@ -15,12 +15,15 @@ const Camera = ({source, nameCamera}) =>{
     return (
         <div className={nameCamera}>
             <div className="containerCamera">
-                <p><strong>{nameCamera}</strong></p>
+                <p><strong>{nameDisplay}</strong></p>
                 <div className="sectionCamera">
                     
                 {hasError ? (
                         // Se c'è un errore nel caricamento dell'immagine, mostriamo il messaggio o un'immagine di fallback
-                        <img className="errorImg" src="./error.png" alt="Error LOad Camera"/>
+                        <div>
+                            <img className="errorImg" src="./error.png" alt="Error LOad Camera"/>
+                            <p><strong>Errore nel caricamento del flusso MJPEG.</strong></p>
+                        </div>
                     ) : (
                         <img 
                             className="cameraImg" 
@@ -30,6 +33,7 @@ const Camera = ({source, nameCamera}) =>{
                             alt={nameCamera} 
                             onError={handleError} // Gestiamo l'errore di caricamento
                         />
+                        
                     )}
                 </div>
             </div>
