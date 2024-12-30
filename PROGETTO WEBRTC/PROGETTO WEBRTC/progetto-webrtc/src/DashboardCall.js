@@ -49,6 +49,7 @@ const WebRTCApp = () => {
 
     if(isJoined){
       socket.current.emit('create or join', room)
+      
     }
 
     const handleBeforeUnload = (room) => {

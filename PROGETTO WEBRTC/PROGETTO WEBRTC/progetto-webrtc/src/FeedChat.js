@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './FeedChat.css'
 import io from 'socket.io-client';
-import { useNavigate } from 'react-router-dom';
+import  toast from 'react-hot-toast';
 const SERVER_URL = 'http://192.168.197.212:8181'; // URL del server Node.js
 
 
@@ -20,7 +20,7 @@ const FeedChat = () => {
 
 
         setRequests((prevRequests) => [...prevRequests, data]);
-
+        toast("⚠ Utente in attesa di supporto!")
       });
     
       socket.current.on('someoneExited', (room)=>{
