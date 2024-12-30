@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import './DashboardCall.css'
 import  toast from 'react-hot-toast';
+import DOMPurify from 'dompurify';
 
 
 const SERVER_URL = 'http://192.168.197.212:8181'; // URL del server Node.js
@@ -125,7 +126,7 @@ const WebRTCApp = () => {
                     joinRoom()
                   }
                 }}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => setUsername(DOMPurify.sanitize(e.target.value))}
               />
               <input
                 type="text"
@@ -137,7 +138,7 @@ const WebRTCApp = () => {
                     joinRoom()
                   }
                 }}
-                onChange={(e) => setRoom(e.target.value)}
+                onChange={(e) => setRoom(DOMPurify.sanitize(e.target.value))}
               />
               <button className="buttonCall" onClick={joinRoom}><strong>Entra</strong></button>
             </div>
@@ -164,7 +165,7 @@ const WebRTCApp = () => {
                       type="text"
                       placeholder="Enter message"
                       value={chatMessage}
-                      onChange={(e) => setChatMessage(e.target.value)}
+                      onChange={(e) => setChatMessage(DOMPurify.sanitize(e.target.value))}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           

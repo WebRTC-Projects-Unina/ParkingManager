@@ -1,7 +1,8 @@
-import logo from "./logo.svg";
+
 import './Posti.css';
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import DOMPurify from 'dompurify';
 
 function Posti() {
 
@@ -75,7 +76,7 @@ function Posti() {
 
     // Effetto per aggiornare i posti disponibili periodicamente
     useEffect(() => {
-        const intervalId = setInterval(() => inviaRichiesta(), 2000);
+        const intervalId = setInterval(() => inviaRichiesta(), 4000);
         
         return () => clearInterval(intervalId); // Pulizia intervallo
     }, []);
@@ -105,7 +106,7 @@ function Posti() {
                     <input
                         type="text"
                         value={InpPostiAdmin} // Collega il valore al tuo stato
-                        onChange={(e) => setInpPostiAdmin(e.target.value) } // Aggiorna stato al cambiare input
+                        onChange={(e) => setInpPostiAdmin(DOMPurify.sanitize(e.target.value)) } // Aggiorna stato al cambiare input
                         placeholder="Inserisci il numero di posti"
 
                     />

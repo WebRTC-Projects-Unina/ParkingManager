@@ -40,7 +40,7 @@ const FeedChat = () => {
 
 
 
-        // Leggi l'array da sessionStorage o inizializza con un array vuoto
+    // Leggi l'array da sessionStorage o inizializza con un array vuoto
     const [requests, setRequests] = useState(() => {
         const storedRequests = sessionStorage.getItem('requests');
         return storedRequests ? JSON.parse(storedRequests) : [];

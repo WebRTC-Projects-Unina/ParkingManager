@@ -2,6 +2,7 @@ import { use, useEffect, useState } from "react";
 import './Login.css';
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
+import DOMPurify from 'dompurify';
 
 const Login= ({onLogin}) =>{
 
@@ -82,10 +83,10 @@ const Login= ({onLogin}) =>{
                 <p><strong>LOGIN</strong></p>
                 <div className="section">
                     <p>
-                        <input type="text" onChange={(e) => setInpUsername(e.target.value)} placeholder="Inserisci Username"/>
+                        <input type="text" onChange={(e) => setInpUsername(DOMPurify.sanitize(e.target.value))} placeholder="Inserisci Username"/>
                     </p>
                     <p>
-                        <input type="text" onChange={(e) => setInpPassword(e.target.value)} placeholder="Inserisci Password"/>
+                        <input type="text" onChange={(e) => setInpPassword(DOMPurify.sanitize(e.target.value))} placeholder="Inserisci Password"/>
                     </p>
                     <p>
                         <button onClick={() => setButtonClicked(true)}><strong>Accedi</strong></button>
