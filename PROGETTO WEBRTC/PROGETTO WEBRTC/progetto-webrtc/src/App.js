@@ -4,6 +4,8 @@ import { Toaster } from 'react-hot-toast';
 import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Dashboard from './DashBoard.js';
+import  WebRTCApp from './DashboardCall.js'
+import InfoPage from './InfoPage.js';
 import Login from './Login.js';
 
 function App() {
@@ -21,6 +23,21 @@ function App() {
           isAuthenticated ? <Dashboard /> : <Navigate to="/login" replace />
         }
       />
+      <Route 
+          path="/call"
+          element={
+            <InfoPage></InfoPage>
+          }
+      />
+
+      <Route 
+          path='/chat'
+          element = {
+            <WebRTCApp></WebRTCApp>
+          }
+      />
+
+        
       <Route
         path="*"
         element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} />}

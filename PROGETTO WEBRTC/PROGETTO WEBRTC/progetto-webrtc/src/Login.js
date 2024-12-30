@@ -7,6 +7,7 @@ const Login= ({onLogin}) =>{
 
     const [ricordami, setRicordami] = useState(false);
     const [button_clicked, setButtonClicked] = useState(false);
+    const [button_call_clicked, setButtonCallClicked] = useState(false);
     const [InpPassword, setInpPassword] = useState('');
     const [InpUsername, setInpUsername] = useState('');
     const navigate = useNavigate(); //ci permette di navigare verso la dashboard, una volta autenticati
@@ -20,7 +21,14 @@ const Login= ({onLogin}) =>{
     }, []);
 
     useEffect(() => {
+        
         if(!button_clicked) return;
+
+        if(InpUsername==='' | InpUsername===''){
+            toast.error('Compila tutti i campi!')
+            setButtonClicked(false)
+            return
+        }
 
         sessionStorage.setItem("usernameSessione",InpUsername);
         sessionStorage.setItem("passwordSessione",InpPassword);
@@ -32,7 +40,7 @@ const Login= ({onLogin}) =>{
         }
 
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://192.168.197.212:8080/admin',true);
+        xhr.open('POST', 'http://localhost:8080/admin',true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.onload = function() {
             if (xhr.status === 200) {
@@ -61,9 +69,14 @@ const Login= ({onLogin}) =>{
         setButtonClicked(false);
     },[button_clicked]);
 
+    useEffect(() => {
+        if(!button_call_clicked) return;
+        navigate("/call");
+        setButtonCallClicked(false);
+    },[button_call_clicked]);
+
     return(
     <div className="LoginPage">
-
         <div className="Login">
             <div className="container">
                 <p><strong>LOGIN</strong></p>
@@ -84,7 +97,7 @@ const Login= ({onLogin}) =>{
             </div>
         </div>
         <footer>
-            <p><strong> Sei un utente? Contattaci per qualsiasi problema! </strong><p></p><button /*ci vuole la logica relativa al VoIP*/><strong>Contatta l'assistenza</strong></button></p>
+            <p><strong> Sei un utente? Contattaci per qualsiasi problema! </strong><p></p><button onClick={() => setButtonCallClicked(true)}><strong>Contatta l'assistenza</strong></button></p>
         </footer>
     </div>
     );

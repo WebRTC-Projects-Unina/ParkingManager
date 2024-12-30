@@ -10,22 +10,24 @@
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;/*Quanto dura l'animazione e il box-shadow come varia*/
 }
 
 h1 {
     margin: 0 0 20px;
-    font-size: 28px;
-    
+    font-size: 28px;   
 }
 
-.section {
+.sectionInfoPage {
+    display: flex; /* Abilita Flexbox */
+    justify-content: space-between; /* Separa gli elementi: uno a sinistra, uno a destra */
+    align-items: center; /* Centra verticalmente il testo e il bottone */
     margin: 20px 0;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 10px;
     background-color: #fafafa;
+    
 }
 
 input[type='text'] {
@@ -44,8 +46,8 @@ input[type='text']:focus {
     border-color: #4d26dacc;
 }
 
-button {
-    padding: 10px 8px;
+.buttonInfoPage {
+    padding: 5px 10px;
     font-size: 13px;
     color: white;
     background-color: #d43a70;
@@ -53,13 +55,20 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+   
+    
 }
 
-button:hover {
+.buttonInfoPage:hover {
     background-color: #d43a70cc;
 }
 
-.Login{
+.pInfoPage{
+    text-align: left;
+}
+
+.InfoPage{
+    text-align: left;
     margin: auto;
     animation: slideUp 1s ease-in-out;
     font-family: 'Montserrat', sans-serif;
@@ -72,40 +81,11 @@ button:hover {
     margin:0;
 }
 
-footer {
-    background: #333;
-    color: white;
-    right: 20vw;
-    padding: 5px 0px;
-    text-align: center;
-    width: 100%;
-    align-items: center;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-}
-
-.LoginPage{
-    overflow-x: hidden;
-    align-items: left;
-    text-align: left;
-    justify-content: left;
-    display: flex;
-}
-
-@keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-.container:hover{
-    transform: translateY(-10px) scale(1.02); /* definiamo la trasformazione transform, in cui translateY permette di capire quanto 
-    spazio copre l'animazione su y, scale invece di quanto diventa piu grande
-    */
-    box-shadow: 2px 2px 25px #ff045c70;
-}
 
 /* Media query per schermi piccoli */
 /* Adatta la larghezza della pagina ai dispositivi mobili */
 @media (max-width: 1300px) {
-    .Login {
+    .InfoPage {
         width: 85%; /* Rende il contenitore più largo per dispositivi piccoli */
         top: 18vh;   /* Abbassa leggermente la posizione per evitare overflow */
         left: 0%;     /* Centrato senza margini */
@@ -121,7 +101,6 @@ footer {
     input[type="text"], button {
         font-size: 16px;
         width: 90%;
-        
     }
 
     footer {
@@ -129,8 +108,10 @@ footer {
         padding: 2%;
     }
 
-    button {
+    .buttonInfoPage {
         font-size: 80%;
         padding: 2%;
+        width: 30%;
     }
 }
+

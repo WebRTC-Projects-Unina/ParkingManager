@@ -58,7 +58,7 @@ button:hover {
 }
 
 .Posti{
-    animation: slideUp 1s ease-in-out;
+    animation: slideUp 0.3s ease-in-out;
     font-family: 'Montserrat', sans-serif;
     justify-content: left;
     position: absolute;

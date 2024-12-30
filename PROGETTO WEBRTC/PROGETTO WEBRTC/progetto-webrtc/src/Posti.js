@@ -76,6 +76,7 @@ function Posti() {
     // Effetto per aggiornare i posti disponibili periodicamente
     useEffect(() => {
         const intervalId = setInterval(() => inviaRichiesta(), 2000);
+        
         return () => clearInterval(intervalId); // Pulizia intervallo
     }, []);
 

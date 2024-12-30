@@ -1,8 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
 
-.container {
-    overflow: hidden;
+.containerCall {
     max-width: 600vw;
     position: absolute;
     width: 90%;
@@ -10,43 +9,47 @@
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;/*Quanto dura l'animazione e il box-shadow come varia*/
 }
 
 h1 {
     margin: 0 0 20px;
     font-size: 28px;
-    
 }
 
-.section {
+.sectionCall {
     margin: 20px 0;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 10px;
     background-color: #fafafa;
+    
 }
 
-input[type='text'] {
-    width: 90%;
-    padding: 10px;
+.textMessage[type='text']{
+    
+    width: 80%;
+    padding: 8px;
     font-size: 16px;
     margin-top: 10px;
     margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 5px;
     transition: border-color 0.3s ease;
+    text-align: left;
+   
 }
 
 input[type='text']:focus {
     outline: none;
-    border-color: #4d26dacc;
+    border-color: rgba(76, 37, 218, 0.8);
 }
 
-button {
-    padding: 10px 8px;
-    font-size: 13px;
+
+.buttonChat{
+    margin-bottom: 1%;
+    padding: 8px 10px;
+    font-size: 16px;
     color: white;
     background-color: #d43a70;
     border: none;
@@ -55,11 +58,34 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
+.buttonCall {
+    padding: 5px 10px;
+    font-size: 13px;
+    color: white;
+    background-color: #d43a70;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    
+}
+
+.buttonCall:hover {
     background-color: #d43a70cc;
 }
 
-.Login{
+.sectionMessage{
+    
+    display: flex; /* Abilita Flexbox */
+    justify-content:flex-start; /* Separa gli elementi: uno a sinistra, uno a destra */
+    align-items: center; /* Centra verticalmente il testo e il bottone */
+    gap: 10px;
+    margin-top: 10px; /* Aggiungi un margine superiore per separare i messaggi */
+    
+}
+
+.dashboardCall{
+    text-align: center;
     margin: auto;
     animation: slideUp 1s ease-in-out;
     font-family: 'Montserrat', sans-serif;
@@ -70,42 +96,44 @@ button:hover {
     width: 40vw;
     background-size: cover;
     margin:0;
+
 }
 
-footer {
-    background: #333;
-    color: white;
-    right: 20vw;
-    padding: 5px 0px;
-    text-align: center;
-    width: 100%;
-    align-items: center;
-    margin: 0;
-    display: flex;
-    justify-content: center;
+.myMessage {
+    align-self: flex-end; /* Allinea il messaggio dell'utente a destra */
+    max-width: 80%;
+    word-wrap: break-word; /* Assicura che le parole vengano spezzate se troppo lunghe */
+  }
+  
+.otherMessage {
+    align-self: flex-start; /* Allinea il messaggio ricevuto a sinistra */
+    max-width: 80%;
+    word-wrap: break-word; /* Assicura che le parole vengano spezzate se troppo lunghe */
+  }
+
+.Chat{
+    animation: slideUp 1s ease-in-out;
 }
 
-.LoginPage{
-    overflow-x: hidden;
-    align-items: left;
-    text-align: left;
-    justify-content: left;
+
+
+.messages{
+    
+    overflow-y: auto; /* Abilita lo scroll verticale */
     display: flex;
+    flex-direction: column; /* Mostra i messaggi in ordine verticale */
+    
 }
+
 
 @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-.container:hover{
-    transform: translateY(-10px) scale(1.02); /* definiamo la trasformazione transform, in cui translateY permette di capire quanto 
-    spazio copre l'animazione su y, scale invece di quanto diventa piu grande
-    */
-    box-shadow: 2px 2px 25px #ff045c70;
-}
+
 
 /* Media query per schermi piccoli */
 /* Adatta la larghezza della pagina ai dispositivi mobili */
 @media (max-width: 1300px) {
-    .Login {
+    .dashboardCall {
         width: 85%; /* Rende il contenitore più largo per dispositivi piccoli */
         top: 18vh;   /* Abbassa leggermente la posizione per evitare overflow */
         left: 0%;     /* Centrato senza margini */
@@ -113,15 +141,15 @@ footer {
         box-shadow: none; /* Riduce l'effetto del box-shadow per schermi piccoli */
     }
 
+   
     .container {
         width: 90%;
         padding: 2%;
     }
 
-    input[type="text"], button {
-        font-size: 16px;
-        width: 90%;
-        
+    .textMessage[type='text'] {
+        font-size: 80%;
+        width: 30%;
     }
 
     footer {
@@ -129,8 +157,15 @@ footer {
         padding: 2%;
     }
 
-    button {
+    .buttonChat {
         font-size: 80%;
-        padding: 2%;
+        margin-bottom: 0.5vh;
+        width: 30%;
+    }
+    
+    .buttonCall{
+        font-size: 80%;
+        
+        width: 30%;
     }
 }
