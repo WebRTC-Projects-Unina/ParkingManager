@@ -125,6 +125,10 @@ input[type='text']:focus {
     
 }
 
+.tableElement{
+    animation: slideUp 0.5s ease-in-out;
+}
+
 
 @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -142,7 +146,7 @@ input[type='text']:focus {
     }
 
    
-    .container {
+    .containerCall {
         width: 90%;
         padding: 2%;
     }
@@ -165,7 +169,6 @@ input[type='text']:focus {
     
     .buttonCall{
         font-size: 80%;
-        
         width: 30%;
     }
 }

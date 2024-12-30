@@ -84,7 +84,7 @@ const FeedChat = () => {
                     </thead>
                     <tbody>
                         {requests.map((request) => (
-                            <tr key={request.socketId}>
+                            <tr className='tableElement' key={request.socketId}>
                                 <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{request.socketId}</td>
                                 <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>{request.roomName}</td>
                                 <td style={{ padding: '8px', borderBottom: '1px solid #ddd' }}>
