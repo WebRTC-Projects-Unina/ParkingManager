@@ -4,13 +4,14 @@ import './InfoPage.css'
 
 
 const InfoPage = () =>{
-    const navigate = useNavigate()
-    const [button_chat_clicked, setButtonChatClicked] = useState(false)
+    const navigate = useNavigate() //variabile che mi permetterà di navigare verso un'altra pagina
+    const [button_chat_clicked, setButtonChatClicked] = useState(false) //variabile di stato per permettere agli utenti di chattare con un admin
 
+    //questo effetto si attiva ogni volta che il bottone della pagina di Info dell'utente viene cliccato
     useEffect(() => {
-        if(!button_chat_clicked) return;
-        navigate("/chat");
-        setButtonChatClicked(false);
+        if(!button_chat_clicked) return; //evito di trattare il valore di default
+        navigate("/chat"); //quando un utente vuole chattare con un admin, viene portato alla pagina dedicata alla chat testuale
+        setButtonChatClicked(false); //e si reinizializza lo stato del bottone
     },[button_chat_clicked]);
 
     return (
