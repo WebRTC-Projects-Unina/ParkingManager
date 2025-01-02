@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { Toaster } from 'react-hot-toast';
 import { useState } from 'react';
@@ -7,6 +6,7 @@ import Dashboard from './DashBoard.js';
 import  WebRTCApp from './DashboardCall.js'
 import InfoPage from './InfoPage.js';
 import Login from './Login.js';
+import Call from './Call.js'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -37,7 +37,13 @@ function App() {
           }
       />
 
-        
+      <Route
+         path='/callVOIP'
+         element = {
+          <Call></Call>
+         }
+      />
+      
       <Route
         path="*"
         element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} />}

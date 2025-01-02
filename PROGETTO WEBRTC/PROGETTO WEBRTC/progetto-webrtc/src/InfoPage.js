@@ -19,10 +19,18 @@ const InfoPage = () =>{
         <div className="Info">
             <div className="container">
                     <h1>Assistenza</h1>
-                    <div className="sectionInfoPage">
+                    <div className="sectionInfoPageChat">
                         <span className="pInfoPage"><strong>Chatta con noi!</strong></span>
                         <button className="buttonInfoPage" onClick={() => setButtonChatClicked(true)}>
-                            <strong>Chat</strong>
+                            <strong>Chat!</strong>
+                        </button>
+                       
+                    </div>
+
+                    <div className="sectionInfoPageCall">
+                        <span className="pInfoPage"><strong>Oppure chiamaci utilizzando Zoiper!</strong></span>
+                            <button className="buttonInfoPage" onClick={() => setButtonChatClicked(true)}>
+                                <strong>Chiamaci!</strong>
                         </button>
                     </div>
             </div>

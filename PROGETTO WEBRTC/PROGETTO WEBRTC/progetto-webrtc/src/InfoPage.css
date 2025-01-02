@@ -18,7 +18,19 @@ h1 {
     font-size: 28px;   
 }
 
-.sectionInfoPage {
+.sectionInfoPageChat {
+    display: flex; /* Abilita Flexbox */
+    justify-content: space-between; /* Separa gli elementi: uno a sinistra, uno a destra */
+    
+    align-items: center; /* Centra verticalmente il testo e il bottone */
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fafafa;
+}
+
+.sectionInfoPageCall{
     display: flex; /* Abilita Flexbox */
     justify-content: space-between; /* Separa gli elementi: uno a sinistra, uno a destra */
     align-items: center; /* Centra verticalmente il testo e il bottone */
@@ -27,7 +39,6 @@ h1 {
     border: 1px solid #ddd;
     border-radius: 10px;
     background-color: #fafafa;
-    
 }
 
 input[type='text'] {
