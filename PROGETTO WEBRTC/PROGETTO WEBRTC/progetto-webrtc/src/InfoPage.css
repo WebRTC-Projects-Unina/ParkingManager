@@ -76,7 +76,10 @@ input[type='text']:focus {
 
 .pInfoPage{
     text-align: left;
+    max-width: 50%;
+    word-wrap: break-word;
 }
+
 
 .InfoPage{
     text-align: left;
@@ -91,6 +94,16 @@ input[type='text']:focus {
     background-size: cover;
     margin:0;
 }
+
+.infoCallVOIP{
+    text-align: left;
+    justify-content: left;
+}
+
+li{
+    text-align: left;
+}
+
 
 
 /* Media query per schermi piccoli */

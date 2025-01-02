@@ -7,6 +7,7 @@ import  WebRTCApp from './DashboardCall.js'
 import InfoPage from './InfoPage.js';
 import Login from './Login.js';
 import Call from './Call.js'
+import InfoCallVOIP from './InfoCallVOIP.js';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -41,6 +42,13 @@ function App() {
          path='/callVOIP'
          element = {
           <Call></Call>
+         }
+      />
+
+      <Route
+         path='/callVOIPTutorialZoiper'
+         element = {
+          <InfoCallVOIP></InfoCallVOIP>
          }
       />
       
