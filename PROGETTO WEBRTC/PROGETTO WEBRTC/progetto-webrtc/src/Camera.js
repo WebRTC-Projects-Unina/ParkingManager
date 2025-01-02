@@ -4,17 +4,14 @@ import "./Camera.css"
 
 const Camera = ({source, nameCamera, nameDisplay}) =>{
 
-
+    //variabile di stato per il caso in cui l'immagine non dovesse caricarsi correttamente
     const [hasError, setHasError] = useState(false);
 
+    //funzione correlata alla variabile di stato che setta quest'ultima allo stato "true" se c'è un errore
     function handleError (){
         setHasError(true);
     }
 
-    
-
-
-    
     return (
         <div className={nameCamera}>
             <div className="containerCamera">

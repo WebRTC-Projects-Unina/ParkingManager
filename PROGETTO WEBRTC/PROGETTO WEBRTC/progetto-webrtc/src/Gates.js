@@ -6,8 +6,9 @@ function Gates() {
 
     //variabile di stato che memorizza l'id relativo all'ingresso/uscita selezionata
     const [id_gates, setIDGates] = useState(0);
-    const [random_ID, setRandomID] = useState("");
+    const [random_ID, setRandomID] = useState(""); //il random ID serve come misura di sicurezza e viene generato dalla scheda ESP-32 NOW che fa da server
 
+    //questo effetto collaterale si verifica ogni volta che cambia lo stato di random ID
     useEffect(() => {
 
         //evitiamo che gestisca il valore corrispondente a quello di default
@@ -15,7 +16,6 @@ function Gates() {
             return;
         }
 
-        //CAMBIATRE IN POST
         const xhr = new XMLHttpRequest(); //definisco una richiesta XML HTTP
         xhr.open('POST','http://192.168.197.89/gates', true); //genero la richiesta HTTP in base all'id ottenuto
         xhr.onload = function() {
@@ -34,25 +34,27 @@ function Gates() {
             toast.error("Errore nell'azionamento del Gate "+id_gates+"!"); //mostro un pop-up di errore
         };
 
-        console.log(JSON.stringify({ id:id_gates, random: random_ID}));
+        //console.log(JSON.stringify({ id:id_gates, random: random_ID}));
         xhr.send(JSON.stringify({id:id_gates, random:random_ID})); //mando la richiesta al server
 
     }, [random_ID]);
 
 
-
+    //effetto collaterale che si verifica ogni volta che si aggiorna id_gates, ossia ogni volta che si clicca un bottone
     useEffect(() => {
 
+        //qui evitiamo che l'effetto si triggheri anche quando la variabile di stato ha il suo valore di default
         if(id_gates===0){
             return;
         }
 
+        //GET alla schedina server per ottenere l'ID random
         const xhr = new XMLHttpRequest();
         xhr.open("GET", "http://192.168.197.89/2002200001280929", true);
 
         xhr.onload = () =>{
             if(xhr.status===200){
-                setRandomID(xhr.responseText);
+                setRandomID(xhr.responseText); //setto l'ID random che mi ha fornito il server sulla scheda
             }
         }
 

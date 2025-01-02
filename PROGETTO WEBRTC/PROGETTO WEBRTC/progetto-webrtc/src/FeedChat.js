@@ -7,32 +7,34 @@ const SERVER_URL = 'http://192.168.197.212:8181'; // URL del server Node.js
 
 const FeedChat = () => {
 
-    const socket = useRef(null);
+    const socket = useRef(null); //variabile per poter utilizzare le socket
     
     useEffect(()=>{
-      socket.current = io(SERVER_URL);
+      socket.current = io(SERVER_URL); //mi collego al server Node.js (presente nella cartella server_videochat)
 
-      socket.current.emit('admin login', 'logged')
+      socket.current.emit('admin login', 'logged') //quando l'admin si collega al server, manda un messaggio di login avvenuto con successo da parte dell'admin
 
-       
+      //questo evento si verifica quando un utente si collega al servizio di assistenza
       socket.current.on('someoneAdded', (data) => {
         console.log(data)
 
-
+        //qui invece aggiungiamo la chat di assistenza alla dashboard dell'admin
         setRequests((prevRequests) => [...prevRequests, data]);
         toast("⚠ Utente in attesa di supporto!")
       });
     
+      //questo evento, invece, si verifica quando un utente abbandona la chat con l'admin
       socket.current.on('someoneExited', (room)=>{
         console.log("Exited: ", room)
         
+        //rimuove la chat relativa a quell'utente dalla dashboard dell'admin
         setRequests((prevRequests) =>
               prevRequests.filter((request) => request.room === room)
         );
     
       })
 
-      // Cleanup
+      // Cleanup: al momento dell'UnMount, ci si disconnette dalla socket
       return () => {
         socket.current.disconnect();
       };
@@ -46,18 +48,19 @@ const FeedChat = () => {
         return storedRequests ? JSON.parse(storedRequests) : [];
     });
 
-  // Sincronizza lo stato requests con sessionStorage
+  // Sincronizza lo stato di "requests" con sessionStorage
     useEffect(() => {
         sessionStorage.setItem('requests', JSON.stringify(requests));
     }, [requests]);
 
-
+    //questa funzione viene invocata quando si clicca il bottone di gestione della chat di assistenza da parte dell'admin
     function handleButtonClick(socketId, socketRoom){
 
-    
+        //value mi serve per dire che l'admin sia già autenticato: assumiamo che l'admin non debba riloggarsi per accedere alla chat, ma utilizziamo un username univoco per tutti gli admin
         const value = true;
         const username = 'admin';
        
+        //questo URL mi permette, quando viene cliccato il tasto "Gestisci", di creare una nuova finestra "pop-up" lato admin per interagire con l'utente
         const url = `/chat?isJoined=${encodeURIComponent(value)}&socketRoom=${encodeURIComponent(socketRoom)}&username=${encodeURIComponent(username)}`;
 
 
