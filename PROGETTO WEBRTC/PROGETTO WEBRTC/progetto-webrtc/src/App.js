@@ -38,12 +38,7 @@ function App() {
           }
       />
 
-      <Route
-         path='/callVOIP'
-         element = {
-          <Call></Call>
-         }
-      />
+     
 
       <Route
          path='/callVOIPTutorialZoiper'

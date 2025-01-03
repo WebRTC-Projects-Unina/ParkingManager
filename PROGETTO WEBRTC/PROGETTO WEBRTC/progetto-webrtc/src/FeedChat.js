@@ -69,7 +69,7 @@ const FeedChat = () => {
 
         // Usa window.open per aprire una nuova finestra
         window.open(url, '_blank', specs);
-
+        
     }
 
     return(

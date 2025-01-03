@@ -1,4 +1,6 @@
 function InfoCallVOIP() {
+
+
     return(
         <div className="InfoPage">
 
@@ -7,24 +9,28 @@ function InfoCallVOIP() {
                     <h1>Tutorial per configurare Zoiper</h1>
                     <div className="section">
                         <ul>
-                        <li><strong>Scarica <a href="https://www.zoiper.com/">Zoiper</a></strong></li>
+                        <li><strong>Scarica <a href="https://zoiper.com" target="_blank" rel="noreferrer">Zoiper</a></strong></li>
                         <li><strong>Connettiti alla nostra rete</strong></li>
                         <li><strong>Inserisci:</strong>
                             <ul>
                             <li>
-                                <i>Username: 1000@192.168.1.20:5060</i>
+                                <i>Username: user@192.168.197.212:5060</i>
                             </li>
                             <li>
-                                <i>Password: 1000</i>
+                                <i>Password: user</i>
                             </li>
                             </ul>
                         </li>
-                        <li><strong>Chiama il numero 1001</strong></li>    
+                        <li><strong>Chiama il numero <i>1001</i></strong></li>    
+                            <ul>
+                                <li>
+                                    Ti risponderemo appena possibile!
+                                </li>
+                            </ul>
                         </ul> 
                     </div>
             </div>
-        </div>
-        
+        </div> 
     </div>
     );
 };

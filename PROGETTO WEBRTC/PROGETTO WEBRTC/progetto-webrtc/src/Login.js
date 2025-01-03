@@ -83,10 +83,29 @@ const Login= ({onLogin}) =>{
                 <p><strong>LOGIN</strong></p>
                 <div className="section">
                     <p>
-                        <input type="text" onChange={(e) => setInpUsername(DOMPurify.sanitize(e.target.value))} placeholder="Inserisci Username"/>
+                        <input type="text" onChange={(e) => setInpUsername(DOMPurify.sanitize(e.target.value))}  onKeyDown={(e) => {
+                            if (e.key === 'Enter' && InpUsername!=='' && InpPassword!=='') {
+                                setButtonClicked(true)
+
+                            }  else if(e.key === 'Enter' && (InpUsername==='' || InpPassword==='')) {
+                                toast.error("Compila tutti i campi!")
+                            }
+
+                            }} placeholder="Inserisci Username"/>
                     </p>
                     <p>
-                        <input type="text" onChange={(e) => setInpPassword(DOMPurify.sanitize(e.target.value))} placeholder="Inserisci Password"/>
+                        <input type="text" onChange={(e) => setInpPassword(DOMPurify.sanitize(e.target.value))} onKeyDown={(e) => {
+                            if (e.key === 'Enter' && (InpUsername!=='' || InpPassword!=='')) {
+                                
+                                setButtonClicked(true)
+
+                            } else if(e.key === 'Enter' && (InpUsername==='' && InpPassword==='')) {
+                                
+                                toast.error("Compila tutti i campi!")
+                                
+                            }
+
+                            }} placeholder="Inserisci Password"/>
                     </p>
                     <p>
                         <button onClick={() => setButtonClicked(true)}><strong>Accedi</strong></button>
@@ -98,7 +117,11 @@ const Login= ({onLogin}) =>{
             </div>
         </div>
         <footer>
-            <p><strong> Sei un utente? Contattaci per qualsiasi problema! </strong><p></p><button onClick={() => setButtonCallClicked(true)}><strong>Contatta l'assistenza</strong></button></p>
+            <div className="titleLogin">
+                <h2 className="title">DI.P.S Parking</h2><img className="logo" src="./PROGETTO_DSI.png" alt="logo"></img>
+            </div>
+
+            <p className="Help"><strong className="helpText"> Sei un utente? Contattaci per qualsiasi problema!</strong><button className="helpButton" onClick={() => setButtonCallClicked(true)}><strong>Contattaci!</strong></button></p>
         </footer>
     </div>
     );
