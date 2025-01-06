@@ -2,12 +2,18 @@ import React, { useState, useRef, useEffect } from 'react';
 import './FeedChat.css'
 import io from 'socket.io-client';
 import  toast from 'react-hot-toast';
-const SERVER_URL = 'http://192.168.197.212:8181'; // URL del server Node.js
+const SERVER_URL = 'http://localhost:8181'; // URL del server Node.js
 
 
 const FeedChat = () => {
 
     const socket = useRef(null); //variabile per poter utilizzare le socket
+
+    // Leggi l'array da sessionStorage o inizializza con un array vuoto
+    const [requests, setRequests] = useState(() => {
+        const storedRequests = sessionStorage.getItem('requests');
+        return storedRequests ? JSON.parse(storedRequests) : [];
+    });
     
     useEffect(()=>{
       socket.current = io(SERVER_URL); //mi collego al server Node.js (presente nella cartella server_videochat)
@@ -25,11 +31,15 @@ const FeedChat = () => {
     
       //questo evento, invece, si verifica quando un utente abbandona la chat con l'admin
       socket.current.on('someoneExited', (room)=>{
-        console.log("Exited: ", room)
+        console.log("Exited:", room)
         
         //rimuove la chat relativa a quell'utente dalla dashboard dell'admin
         setRequests((prevRequests) =>
-              prevRequests.filter((request) => request.room === room)
+             
+              prevRequests.filter((request) => { 
+                console.log(request.roomName)
+                return request.roomName !== room 
+            })
         );
     
       })
@@ -42,11 +52,7 @@ const FeedChat = () => {
 
 
 
-    // Leggi l'array da sessionStorage o inizializza con un array vuoto
-    const [requests, setRequests] = useState(() => {
-        const storedRequests = sessionStorage.getItem('requests');
-        return storedRequests ? JSON.parse(storedRequests) : [];
-    });
+    
 
   // Sincronizza lo stato di "requests" con sessionStorage
     useEffect(() => {

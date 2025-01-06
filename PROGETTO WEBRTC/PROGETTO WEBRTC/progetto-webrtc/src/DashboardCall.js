@@ -5,7 +5,7 @@ import  toast from 'react-hot-toast';
 import DOMPurify from 'dompurify'; //serve per l'escape sugli input da tastiera
 
 
-const SERVER_URL = 'http://192.168.197.212:8181'; // URL del server Node.js
+const SERVER_URL = 'http://localhost:8181'; // URL del server Node.js
 
 const WebRTCApp = () => {
   const messagesEndRef = useRef(null);
@@ -26,9 +26,6 @@ const WebRTCApp = () => {
   const [room, setRoom] = useState(socketRoom) || '';
   const [username, setUsername] = useState(usernameVal) || '';
  
-  console.log(username)
-  console.log(isJoined)
-  console.log(room)
   
   //funzione che fa scorrere la chat in base ai messaggi inviati
   const scrollToBottom = () => {
@@ -48,8 +45,7 @@ const WebRTCApp = () => {
 
     //se qualcuno ha joinato la stanza, mando un messaggio
     if(isJoined){
-      socket.current.emit('create or join', room)
-      
+      socket.current.emit('join', room)
     }
 
     //mi serve per gestire l'evento in cui devo rimuovere la chat dalla dashboard dell'admin
@@ -63,9 +59,9 @@ const WebRTCApp = () => {
   
     // Listener per i messaggi della chat
     socket.current.on('chat message', (data) => {
-      
+      console.log("Heyla!")
       setMessages((prevMessages) => [...prevMessages, data]);
-    });
+    }, []);
 
     // Cleanup
     return () => {
@@ -81,13 +77,26 @@ const WebRTCApp = () => {
       return
     }
 
+    if(username.trim()==='admin'){
+      toast.error('Username non valido!')
+      return 
+    }
+
     //comunico che utente ha creato la stanza
-    socket.current.emit('create or join', room);
+    socket.current.emit('create', room);
+
 
     //se la stanza è piena, mostro un pop-up
     socket.current.on('full', () =>{
       toast.error('Camera piena! Si prega di sceglierne un\'altra!')
     })
+
+    //se la stanza è piena, mostro un pop-up
+    socket.current.on('adminOff', () =>{
+      toast.error('L\'Admin non è al momento presente. Riprovare più tardi.')
+    })    
+
+
     //se la stanza è stata creata correttamente, la joino effettivamente
     socket.current.on('created', () => {
       setIsJoined(true);
@@ -140,7 +149,6 @@ const WebRTCApp = () => {
                 value={room}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
-                    
                     joinRoom()
                   }
                 }}

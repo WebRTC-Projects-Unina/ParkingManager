@@ -31,45 +31,66 @@ io.sockets.on('connection', function (socket) {
     //se si è connesso l'admin, allora l'admin joina la "admin room"
     socket.on('admin login', function(){
         socket.join('AdminRoom');
-        console.log('Admin Joined');
+        
+        console.log('Admin Joined', socket.id);
     })
 
-    //se invece riceve un messaggio di creazione o di unione a una stanza,
-    socket.on('create or join', function (room) {
-        // Recupera i dettagli della stanza
-        const roomClients = io.sockets.adapter.rooms.get(room);
-        const numClients = roomClients ? roomClients.size : 0;
+    //se invece riceve un messaggio di creazione a una stanza, creata dagli utenti.
+    socket.on('create', function (room) {
+       
+
+        //Recupero info per la stanza dell'admin per verificare che non sia presente!
+        const roomAdmin = io.sockets.adapter.rooms.get('AdminRoom');
+        const thereisAdmin = roomAdmin ? roomAdmin.size : 0;
+
+        //Se l'admin non è presente nella 'AdminRoom' allora non facciamo creare la stanza.
+        if(thereisAdmin===0){
+            socket.emit('adminOff')
+            return;
+        }
+
+        
+        //Se tra tutte le stanze, il nome scelto già esiste, mando un messaggio di full.
+        for (let value of socketRooms.values()) { 
+            if (value === room) {
+              socket.emit('full')
+              return;
+            }
+        }
+    
+        // Crea e unisci la stanza
+        socket.join(room);
 
         socketRooms.set(socket.id, room); // Mappa il socket al nome della stanza
+        //memorizzo i dati da inviare (ovvero l'id della socket e il nome della stanza)
+        const data = {socketId: socket.id, roomName:room}
+        socket.to('AdminRoom').emit('someoneAdded', data) //mando il messaggio sopracitato alla "AdminRoom" e innesco l'evento "someoneAdded" per notificare che qualcuno si è unito alla stanzaq
 
-        console.log(`Room ${room} has ${numClients} client(s)`);
-        console.log(`Request to create or join room: ${room}`);
+        //poi ovviamente mando un messaggio di creazione della stanza, riportando il nome della stanza
+        socket.emit('created', room);
+        console.log(`User ${socket.id} created and joined room ${room}`);
+        
+    });
 
-        //se non ci sono utente connessi già alla stanza,
-        if (numClients === 0) {
-            // Crea e unisci la stanza
-            socket.join(room);
 
-            //memorizzo i dati da inviare (ovvero l'id della socket e il nome della stanza)
-            const data = {socketId: socket.id, roomName:room}
-            socket.to('AdminRoom').emit('someoneAdded', data) //mando il messaggio sopracitato alla "AdminRoom" e innesco l'evento "someoneAdded" per notificare che qualcuno si è unito alla stanzaq
+    //Richiesta di Join, verrà solo dall'Admin!
+    socket.on('join', function (room) {
 
-            //poi ovviamente mando un messaggio di creazione della stanza, riportando il nome della stanza
-            socket.emit('created', room);
-            console.log(`User ${socket.id} created and joined room ${room}`);
-        } else if (numClients === 1) {
+        const roomClients = io.sockets.adapter.rooms.get(room);
+
+        if(roomClients.size===1){
             // Unisci la stanza esistente
             socket.join(room);
             socket.emit('joined', room);
+
+            socketRooms.set(socket.id, room); // Mappa il socket al nome della stanza
             io.to(room).emit('join', room);//mando a tutti i partecipanti nella room il messaggio che qualcuno ha joinato la stanza
             console.log(`User ${socket.id} joined room ${room}`);
-        } else {
-            // La stanza è piena
-            socket.emit('full', room);
-            console.log(`Room ${room} is full`);
         }
-    });
 
+        
+        
+    })
     
     // Gestione dei messaggi di chat
     socket.on('chat message', function (data) {
@@ -85,10 +106,13 @@ io.sockets.on('connection', function (socket) {
         console.log(`User ${socket.id} disconnected`);
         const roomName = socketRooms.get(socket.id); // Recupera il nome della stanza
 
+        
+
         if (roomName){
             //se il nome della stanza è stato recuperato, notifico la stanza admin che qualcuno ha abbandonato (inviando il messaggio "someoneExited")
             socket.to('AdminRoom').emit('someoneExited', roomName);
             socket.to(data).emit('someoneExited'); //e poi lo mando a tutti gli altri partecipanti
+            socketRooms.delete(socket.id)
         }
         
     });
