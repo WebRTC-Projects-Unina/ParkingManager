@@ -9,7 +9,7 @@ Each admin must first authenticate through a dedicated login page by providing a
 
 ### Dashboard
 Once logged in successfully, the admin can:
-
+- 
 - Monitor the parking lot from two different angles using the two installed cameras.
 - Update the number of available parking spots in real time.
 - Open/close each entry/exit by interacting with buttons.
