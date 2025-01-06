@@ -13,6 +13,13 @@
 const char* ssid = "Chihiro Fushimi";          // Sostituisci con il nome della tua rete Wi-Fi
 const char* password = "giuv1911";            // Sostituisci con la password della tua rete Wi-Fi
 
+// Configurazione IP statico
+IPAddress local_IP(192, 168, 197, 89);    // IP statico desiderato
+IPAddress gateway(192, 168, 1, 1);      // Gateway della rete
+IPAddress subnet(255, 255, 255, 0);     // Subnet mask
+IPAddress primaryDNS(8, 8, 8, 8);       // Server DNS primario
+
+
 // Numero totale di posti disponibili
 #define POSTI_TOTALI 10
 int posti_liberi = POSTI_TOTALI;
@@ -319,12 +326,20 @@ void setup() {
   //Creazione semaforo
   xMutex = xSemaphoreCreateMutex(); 
 
+  // Configura l'IP statico
+  if (!WiFi.config(local_IP, gateway, subnet, primaryDNS)) {
+    Serial.println("Errore nella configurazione dell'IP statico");
+  }
+
   // Configurazione Wi-Fi
   WiFi.begin(ssid, password);
   Serial.println("Connessione alla rete Wi-Fi...");
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Connessione...");
+
+
+
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
     Serial.print(".");

@@ -20,6 +20,12 @@ int valido = 0;
 const char* ssid = "Chihiro Fushimi";          // Sostituisci con il nome della tua rete Wi-Fi
 const char* password = "giuv1911";  // Sostituisci con la password della tua rete Wi-Fi
 
+// Configurazione IP statico
+IPAddress local_IP(192, 168, 197, 101);    // IP statico desiderato
+IPAddress gateway(192, 168, 1, 1);      // Gateway della rete
+IPAddress subnet(255, 255, 255, 0);     // Subnet mask
+IPAddress primaryDNS(8, 8, 8, 8); 
+
 // URL del server centrale
 const char* serverURL = "http://192.168.197.89/parking"; // Sostituisci con l'indirizzo del tuo server
 
@@ -126,6 +132,11 @@ void setup() {
   setup_servo();
 
   pinMode(pinInput, INPUT); // Configurazione del pin del photo-interrupter come pin di input
+
+  // Configura l'IP statico
+  if (!WiFi.config(local_IP, gateway, subnet, primaryDNS)) {
+    Serial.println("Errore nella configurazione dell'IP statico");
+  }
 
   // Connessione alla rete Wi-Fi
   Serial.println("Connessione alla rete Wi-Fi...");
