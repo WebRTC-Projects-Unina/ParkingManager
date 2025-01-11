@@ -13,11 +13,6 @@
 const char* ssid = "Chihiro Fushimi";          // Sostituisci con il nome della tua rete Wi-Fi
 const char* password = "giuv1911";            // Sostituisci con la password della tua rete Wi-Fi
 
-// Configurazione IP statico
-IPAddress local_IP(192, 168, 197, 89);    // IP statico desiderato
-IPAddress gateway(192, 168, 1, 1);      // Gateway della rete
-IPAddress subnet(255, 255, 255, 0);     // Subnet mask
-IPAddress primaryDNS(8, 8, 8, 8);       // Server DNS primario
 
 
 // Numero totale di posti disponibili
@@ -29,7 +24,7 @@ int posti_liberi = POSTI_TOTALI;
 SemaphoreHandle_t xMutex;
 
 
-String ip_addresses[4] = {"192.168.197.63","192.168.197.154","192.168.197.173","192.168.197.101"}; //address IP
+String ip_addresses[4] = {"192.168.122.63","192.168.122.155","192.168.122.173","192.168.122.101"}; //address IP
 
 // Variabili per il controllo del LED
 String ledState = "OFF";
@@ -326,10 +321,6 @@ void setup() {
   //Creazione semaforo
   xMutex = xSemaphoreCreateMutex(); 
 
-  // Configura l'IP statico
-  if (!WiFi.config(local_IP, gateway, subnet, primaryDNS)) {
-    Serial.println("Errore nella configurazione dell'IP statico");
-  }
 
   // Configurazione Wi-Fi
   WiFi.begin(ssid, password);
@@ -344,6 +335,7 @@ void setup() {
     delay(1000);
     Serial.print(".");
   }
+
   Serial.println("\nConnesso al Wi-Fi!");
   Serial.print("Indirizzo IP: ");
   Serial.println(WiFi.localIP());

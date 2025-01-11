@@ -23,8 +23,8 @@ const DashBoard = () => {
         <>
         <Posti/>
         <Gates/>
-        <Camera source={'http://192.168.197.155'} nameCamera={'Camera1'} nameDisplay={"Camera 1"}/> 
-        <Camera source={'http://192.168.197.109'} nameCamera={'Camera2'} nameDisplay={"Camera 2"}/>
+        <Camera source={'http://192.168.122.154'} nameCamera={'Camera1'} nameDisplay={"Camera 1"}/> 
+        <Camera source={'http://192.168.122.109'} nameCamera={'Camera2'} nameDisplay={"Camera 2"}/>
         <Header/>
         <FeedChat/>
         <Toaster position="bottom-left"/>

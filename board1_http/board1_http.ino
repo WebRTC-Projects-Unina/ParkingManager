@@ -5,7 +5,7 @@
 
 #define PIN_SG90 16 // Pin output servomotore
 #define pinInput 5  // Pin di input per il photo-interrupter
-int x=0; //valore da cambiare in base alla scheda (0: uscita, 1: ingresso)
+int x=1; //valore da cambiare in base alla scheda (0: uscita, 1: ingresso)
 
 
 WebServer server(80);
@@ -20,14 +20,9 @@ int valido = 0;
 const char* ssid = "Chihiro Fushimi";          // Sostituisci con il nome della tua rete Wi-Fi
 const char* password = "giuv1911";  // Sostituisci con la password della tua rete Wi-Fi
 
-// Configurazione IP statico
-IPAddress local_IP(192, 168, 197, 101);    // IP statico desiderato
-IPAddress gateway(192, 168, 1, 1);      // Gateway della rete
-IPAddress subnet(255, 255, 255, 0);     // Subnet mask
-IPAddress primaryDNS(8, 8, 8, 8); 
 
 // URL del server centrale
-const char* serverURL = "http://192.168.197.89/parking"; // Sostituisci con l'indirizzo del tuo server
+const char* serverURL = "http://192.168.122.89/parking"; // Sostituisci con l'indirizzo del tuo server
 
 // Timeout massimo per la richiesta HTTP (in millisecondi)
 const unsigned long httpTimeout = 5000;
@@ -133,11 +128,7 @@ void setup() {
 
   pinMode(pinInput, INPUT); // Configurazione del pin del photo-interrupter come pin di input
 
-  // Configura l'IP statico
-  if (!WiFi.config(local_IP, gateway, subnet, primaryDNS)) {
-    Serial.println("Errore nella configurazione dell'IP statico");
-  }
-
+  
   // Connessione alla rete Wi-Fi
   Serial.println("Connessione alla rete Wi-Fi...");
   WiFi.begin(ssid, password);
@@ -160,7 +151,7 @@ void loop() {
   int valueState = digitalRead(pinInput); // Legge il valore digitale dal pin del photo-interrupter
   Serial.println(valueState);
 
-  int id = 1; // ID univoco per questa scheda
+  int id = 3; // ID univoco per questa scheda
 
   if (valido == 0 && valueState == HIGH) {
     // Invia i dati al server tramite richiesta HTTP

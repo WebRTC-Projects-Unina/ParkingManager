@@ -25,10 +25,7 @@
 #include "esp_http_server.h"
 
 
-IPAddress local_IP(192, 168, 197, 109);    // IP statico desiderato
-IPAddress gateway(192, 168, 1, 1);      // Gateway della rete
-IPAddress subnet(255, 255, 255, 0);     // Subnet mask
-IPAddress primaryDNS(8, 8, 8, 8);       // Server DNS primario
+
 
 //Replace with your network credentials
 const char* ssid = "Chihiro Fushimi";
@@ -250,10 +247,7 @@ void setup() {
     return;
   }
 
-  // Configura l'IP statico
-  if (!WiFi.config(local_IP, gateway, subnet, primaryDNS)) {
-    Serial.println("Errore nella configurazione dell'IP statico");
-  }
+  
 
   // Wi-Fi connection
   WiFi.begin(ssid, password);

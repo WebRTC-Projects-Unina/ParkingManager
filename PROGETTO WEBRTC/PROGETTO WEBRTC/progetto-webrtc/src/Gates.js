@@ -17,7 +17,7 @@ function Gates() {
         }
 
         const xhr = new XMLHttpRequest(); //definisco una richiesta XML HTTP
-        xhr.open('POST','http://192.168.197.89/gates', true); //genero la richiesta HTTP in base all'id ottenuto
+        xhr.open('POST','http://192.168.122.89/gates', true); //genero la richiesta HTTP in base all'id ottenuto
         xhr.onload = function() {
             setIDGates(0);
             if(xhr.status===200){ //se va tutto ok,
@@ -50,7 +50,7 @@ function Gates() {
 
         //GET alla schedina server per ottenere l'ID random
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", "http://192.168.197.89/2002200001280929", true);
+        xhr.open("GET", "http://192.168.122.89/2002200001280929", true);
 
         xhr.onload = () =>{
             if(xhr.status===200){

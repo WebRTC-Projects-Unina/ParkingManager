@@ -14,7 +14,7 @@ function InfoCallVOIP() {
                         <li><strong>Inserisci:</strong>
                             <ul>
                             <li>
-                                <i>Username: user@192.168.197.212:5060</i>
+                                <i>Username: user@192.168.122.212:5060</i>
                             </li>
                             <li>
                                 <i>Password: user</i>
